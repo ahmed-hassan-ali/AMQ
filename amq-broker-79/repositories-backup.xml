@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <profiles>
+    <profile>
+      <repositories>
+        <repository>
+          <id>fs-jboss</id>
+          <name>fs-jboss</name>
+          <url>https://repository.jboss.org/nexus/content/groups/fs-public/</url>
+        </repository>
+        <repository>
+          <releases />
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <id>redhat-ea-repository</id>
+          <name>redhat-ea-repository</name>
+          <url>https://maven.repository.redhat.com/earlyaccess/all</url>
+        </repository>
+        <repository>
+          <releases />
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <id>jboss-ea-repository</id>
+          <name>jboss-ea-repository</name>
+          <url>https://repository.jboss.org/nexus/content/groups/ea</url>
+        </repository>
+      </repositories>
+      <id>removed-by-pme</id>
+    </profile>
+  </profiles>
+  <activeProfiles>
+    <activeProfile>removed-by-pme</activeProfile>
+  </activeProfiles>
+</settings>

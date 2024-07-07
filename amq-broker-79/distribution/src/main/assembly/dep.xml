@@ -1,0 +1,101 @@
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more
+  ~ contributor license agreements. See the NOTICE file distributed with
+  ~ this work for additional information regarding copyright ownership.
+  ~ The ASF licenses this file to You under the Apache License, Version 2.0
+  ~ (the "License"); you may not use this file except in compliance with
+  ~ the License. You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+
+   <id>bin</id>
+   <formats>
+      <format>dir</format>
+      <format>zip</format>
+      <format>tar.gz</format>
+   </formats>
+   <includeBaseDirectory>true</includeBaseDirectory>
+
+   <dependencySets>
+      <dependencySet>
+         <includes>
+            <include>org.jboss.rh-messaging.amq:amq-broker-redhat-branding</include>
+         </includes>
+         <outputDirectory>/web/</outputDirectory>
+         <unpack>false</unpack>
+         <outputFileNameMapping>redhat-branding.war</outputFileNameMapping>
+      </dependencySet>
+      <dependencySet>
+         <includes>
+            <include>io.hawt:hawtio-war</include>
+         </includes>
+         <outputDirectory>/web/</outputDirectory>
+         <unpack>false</unpack>
+         <outputFileNameMapping>hawtio.war</outputFileNameMapping>
+      </dependencySet>
+      <dependencySet>
+         <includes>
+            <include>org.apache.activemq:artemis-prometheus-metrics-plugin-servlet</include>
+         </includes>
+         <outputDirectory>/web/</outputDirectory>
+         <unpack>false</unpack>
+         <outputFileNameMapping>metrics.war</outputFileNameMapping>
+      </dependencySet>
+      <dependencySet>
+         <includes>
+            <include>org.apache.activemq:artemis-prometheus-metrics-plugin</include>
+            <!-- for keycloak jaas login modules - security-keycloak example -->
+            <include>org.keycloak:keycloak-adapter-core:jar</include>
+            <include>org.keycloak:keycloak-core:jar</include>
+            <include>org.keycloak:keycloak-common:jar</include>
+            <include>com.sun.activation:jakarta.activation:jar</include>
+            <include>org.bouncycastle:bcprov-jdk15on:jar</include>
+            <include>org.bouncycastle:bcpkix-jdk15on:jar</include>
+            <include>com.fasterxml.jackson.core:jackson-core:jar</include>
+            <include>com.fasterxml.jackson.core:jackson-databind:jar</include>
+            <include>com.fasterxml.jackson.core:jackson-annotations:jar</include>
+            <include>org.apache.httpcomponents:httpclient:jar</include>
+            <include>org.apache.httpcomponents:httpcore:jar</include>
+            <include>commons-codec:commons-codec:jar</include>
+         </includes>
+         <outputDirectory>/lib/</outputDirectory>
+         <unpack>false</unpack>
+      </dependencySet>
+   </dependencySets>
+
+   <fileSets>
+      <!-- Include conf -->
+      <fileSet>
+         <directory>${AMQ.baseDir}/distribution/src/main/resources/etc/</directory>
+         <outputDirectory>etc</outputDirectory>
+         <useDefaultExcludes>true</useDefaultExcludes>
+      </fileSet>
+      <fileSet>
+         <directory>${AMQ.baseDir}/distribution/src/main/filtered-resources/etc/</directory>
+         <outputDirectory>etc</outputDirectory>
+         <useDefaultExcludes>true</useDefaultExcludes>
+         <filtered>true</filtered>
+      </fileSet>
+      <fileSet>
+         <directory>${AMQ.baseDir}/distribution/src/main/resources/web/</directory>
+         <outputDirectory>web</outputDirectory>
+         <useDefaultExcludes>true</useDefaultExcludes>
+      </fileSet>
+      <fileSet>
+         <directory>target/artemis/apache-artemis-${artemis-version}/</directory>
+         <outputDirectory>/</outputDirectory>
+      </fileSet>
+   </fileSets>
+
+</assembly>

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <parent>
+      <groupId>org.jboss.rh-messaging.amq</groupId>
+      <artifactId>amq-broker-parent</artifactId>
+      <version>7.9.1.CR2-redhat-00003</version>
+   </parent>
+
+   <modelVersion>4.0.0</modelVersion>
+   <artifactId>amq-broker</artifactId>
+   <packaging>pom</packaging>
+
+   <properties>
+      <AMQ.baseDir>${project.basedir}/..</AMQ.baseDir>
+      <!-- note references to related transitive dependencies in src/main/assembly/dep.xml
+         a version bump may require changes to what is included in the distro-->
+      <prometheus-plugin-version>1.1.0.redhat-00001</prometheus-plugin-version>
+      <keycloak-version>9.0.12.redhat-00002</keycloak-version>
+      <httpcomponents-version>4.5.13.redhat-00002</httpcomponents-version>
+      <commons-codec-version>1.15.0.redhat-00001</commons-codec-version>
+   </properties>
+
+   <dependencies>
+      <dependency>
+         <groupId>org.apache.activemq</groupId>
+         <artifactId>apache-artemis</artifactId>
+         <version>${artemis-version}</version>
+         <classifier>bin</classifier>
+         <type>zip</type>
+         <exclusions>
+            <exclusion>
+               <groupId>org.jolokia</groupId>
+               <artifactId>jolokia-war</artifactId>
+            </exclusion>
+         </exclusions>
+         <scope>provided</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.rh-messaging.amq</groupId>
+         <artifactId>amq-broker-redhat-branding</artifactId>
+         <version>7.9.1.CR2-redhat-00003</version>
+         <type>war</type>
+      </dependency>
+      <dependency>
+         <groupId>org.apache.activemq</groupId>
+         <artifactId>artemis-prometheus-metrics-plugin</artifactId>
+         <version>${prometheus-plugin-version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.apache.activemq</groupId>
+         <artifactId>artemis-prometheus-metrics-plugin-servlet</artifactId>
+         <version>${prometheus-plugin-version}</version>
+         <type>war</type>
+      </dependency>
+      <dependency>
+         <groupId>io.hawt</groupId>
+         <artifactId>hawtio-war</artifactId>
+         <version>${hawtio-version}</version>
+         <type>war</type>
+      </dependency>
+      <dependency>
+         <groupId>org.keycloak</groupId>
+         <artifactId>keycloak-adapter-core</artifactId>
+         <version>${keycloak-version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.keycloak</groupId>
+         <artifactId>keycloak-core</artifactId>
+         <version>${keycloak-version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.apache.httpcomponents</groupId>
+         <artifactId>httpclient</artifactId>
+         <version>${httpcomponents-version}</version>
+      </dependency>
+      <dependency>
+         <groupId>commons-codec</groupId>
+         <artifactId>commons-codec</artifactId>
+         <version>${commons-codec-version}</version>
+      </dependency>
+
+   </dependencies>
+
+
+   <build>
+      <finalName>${project.artifactId}-${release-version}</finalName>
+      <resources>
+         <resource>
+            <directory>${project.basedir}/src/main/resources</directory>
+            <includes>
+               <include>**/*</include>
+            </includes>
+         </resource>
+         <resource>
+            <directory>${project.basedir}/src/main/filtered-resources</directory>
+            <filtering>true</filtering>
+            <includes>
+               <include>**/*</include>
+            </includes>
+         </resource>
+      </resources>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+            <execution>
+               <id>copy-artemis</id>
+               <phase>generate-resources</phase>
+               <goals>
+                  <goal>unpack</goal>
+               </goals>
+               <configuration>
+                  <artifactItems>
+                     <artifactItem>
+                        <groupId>org.apache.activemq</groupId>
+                        <artifactId>apache-artemis</artifactId>
+                        <version>${artemis-version}</version>
+                        <classifier>bin</classifier>
+                        <type>zip</type>
+                        <outputDirectory>target/artemis/</outputDirectory>
+                     </artifactItem>
+                  </artifactItems>
+                  <excludes>apache-artemis-${artemis-version}/web/api,apache-artemis-${artemis-version}/web/activemq-branding.war</excludes>
+                  <excludes>apache-artemis-${artemis-version}/web/api,apache-artemis-${artemis-version}/web/console.war</excludes>
+               </configuration>
+            </execution>
+            </executions>
+         </plugin>
+
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.8</version>
+            <executions>
+               <execution>
+                  <id>update</id>
+                  <phase>generate-resources</phase>
+                  <goals>
+                     <goal>run</goal>
+                  </goals>
+                  <configuration>
+                     <target>
+                        <unzip src="target/artemis/apache-artemis-${artemis-version}/lib/artemis-cli-${artemis-version}.jar" dest="${project.build.directory}/tmp" />
+                        <!-- updating artemis-service.xml. Amq needs some extra arguments in it to run on Windows as a service -->
+                        <copy file="src/main/resources/etc/org/apache/activemq/artemis/cli/commands/bin/artemis-service.xml" tofile="${project.build.directory}/tmp/org/apache/activemq/artemis/cli/commands/bin/artemis-service.xml" overwrite="true" />
+                        <!-- updating artemis. Set default hwatio.role -->
+                        <copy file="src/main/resources/etc/org/apache/activemq/artemis/cli/commands/bin/artemis" tofile="${project.build.directory}/tmp/org/apache/activemq/artemis/cli/commands/bin/artemis" overwrite="true" />
+                        <zip basedir="${project.build.directory}/tmp" destfile="${project.build.directory}/artemis-cli-${artemis-version}.jar" />
+                        <copy file="${project.build.directory}/artemis-cli-${artemis-version}.jar" tofile="target/artemis/apache-artemis-${artemis-version}/lib/artemis-cli-${artemis-version}.jar" overwrite="true" />
+                     </target>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+
+         <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>${maven.assembly.plugin.version}</version>
+            <executions>
+               <execution>
+                  <id>bin</id>
+                  <configuration>
+                     <descriptor>src/main/assembly/dep.xml</descriptor>
+                     <tarLongFileMode>posix</tarLongFileMode>
+                  </configuration>
+                  <phase>package</phase>
+                  <goals>
+                     <goal>single</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+      </plugins>
+   </build>
+</project>

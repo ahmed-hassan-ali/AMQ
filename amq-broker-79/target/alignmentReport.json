@@ -1,0 +1,106 @@
+{
+  "executionRoot" : {
+    "groupId" : "org.jboss.rh-messaging.amq",
+    "artifactId" : "amq-broker-parent",
+    "version" : "7.9.1.CR2-redhat-00003",
+    "originalGAV" : "org.jboss.rh-messaging.amq:amq-broker-parent:7.9.1.CR2"
+  },
+  "modules" : [ {
+    "gav" : {
+      "groupId" : "org.jboss.rh-messaging.amq",
+      "artifactId" : "amq-broker-parent",
+      "version" : "7.9.1.CR2-redhat-00003",
+      "originalGAV" : "org.jboss.rh-messaging.amq:amq-broker-parent:7.9.1.CR2"
+    },
+    "properties" : {
+      "artemis-version" : {
+        "oldValue" : "2.18.0",
+        "value" : "2.18.0.redhat-00015"
+      }
+    },
+    "managedPlugins" : { },
+    "managedDependencies" : { }
+  }, {
+    "gav" : {
+      "groupId" : "org.jboss.rh-messaging.amq",
+      "artifactId" : "amq-broker",
+      "version" : "7.9.1.CR2-redhat-00003",
+      "originalGAV" : "org.jboss.rh-messaging.amq:amq-broker:7.9.1.CR2"
+    },
+    "properties" : {
+      "prometheus-plugin-version" : {
+        "oldValue" : "1.1.0",
+        "value" : "1.1.0.redhat-00001"
+      },
+      "httpcomponents-version" : {
+        "oldValue" : "4.5.13",
+        "value" : "4.5.13.redhat-00002"
+      },
+      "commons-codec-version" : {
+        "oldValue" : "1.15",
+        "value" : "1.15.0.redhat-00001"
+      }
+    },
+    "managedPlugins" : { },
+    "managedDependencies" : { },
+    "dependencies" : {
+      "org.apache.activemq:apache-artemis:2.18.0" : {
+        "groupId" : "org.apache.activemq",
+        "artifactId" : "apache-artemis",
+        "version" : "2.18.0.redhat-00015"
+      },
+      "org.apache.httpcomponents:httpclient:4.5.13" : {
+        "groupId" : "org.apache.httpcomponents",
+        "artifactId" : "httpclient",
+        "version" : "4.5.13.redhat-00002"
+      },
+      "org.jboss.rh-messaging.amq:amq-broker-redhat-branding:7.9.1.CR2" : {
+        "groupId" : "org.jboss.rh-messaging.amq",
+        "artifactId" : "amq-broker-redhat-branding",
+        "version" : "7.9.1.CR2-redhat-00003"
+      },
+      "org.apache.activemq:artemis-prometheus-metrics-plugin-servlet:1.1.0" : {
+        "groupId" : "org.apache.activemq",
+        "artifactId" : "artemis-prometheus-metrics-plugin-servlet",
+        "version" : "1.1.0.redhat-00001"
+      },
+      "org.apache.activemq:artemis-prometheus-metrics-plugin:1.1.0" : {
+        "groupId" : "org.apache.activemq",
+        "artifactId" : "artemis-prometheus-metrics-plugin",
+        "version" : "1.1.0.redhat-00001"
+      },
+      "commons-codec:commons-codec:1.15" : {
+        "groupId" : "commons-codec",
+        "artifactId" : "commons-codec",
+        "version" : "1.15.0.redhat-00001"
+      }
+    }
+  }, {
+    "gav" : {
+      "groupId" : "org.jboss.rh-messaging.amq",
+      "artifactId" : "amq-broker-redhat-branding",
+      "version" : "7.9.1.CR2-redhat-00003",
+      "originalGAV" : "org.jboss.rh-messaging.amq:amq-broker-redhat-branding:7.9.1.CR2"
+    },
+    "properties" : {
+      "slf4j-version" : {
+        "oldValue" : "1.7.21",
+        "value" : "1.7.21.redhat-3"
+      }
+    },
+    "managedPlugins" : { },
+    "managedDependencies" : { },
+    "dependencies" : {
+      "org.slf4j:slf4j-api:1.7.21" : {
+        "groupId" : "org.slf4j",
+        "artifactId" : "slf4j-api",
+        "version" : "1.7.21.redhat-3"
+      },
+      "org.slf4j:slf4j-log4j12:1.7.21" : {
+        "groupId" : "org.slf4j",
+        "artifactId" : "slf4j-log4j12",
+        "version" : "1.7.21.redhat-3"
+      }
+    }
+  } ]
+}
